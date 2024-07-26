@@ -1,0 +1,23 @@
+# Questa opzione permette al server di scegliere automaticamente il file più appropriato tra una serie di file con lo stesso nome base ma con estensioni diverse, basandosi sulla richiesta del client.
+Options -MultiViews
+
+# Abilita il modulo di riscrittura
+RewriteEngine On 
+
+# La direttiva RewriteBase imposta il percorso di base per le regole di riscrittura.
+RewriteBase /progetti/boolean_mamp/php-mvc/public/
+
+# Queste direttive impostano condizioni per la riscrittura delle URL:
+# RewriteCond %{REQUEST_FILENAME} !-d: Questa condizione verifica che la richiesta non sia per una directory esistente.
+# RewriteCond %{REQUEST_FILENAME} !-f: Questa condizione verifica che la richiesta non sia per un file esistente.
+# Se entrambe le condizioni sono vere (la richiesta non è per un file o una directory esistente), allora la regola di riscrittura verrà applicata.
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Questa direttiva definisce la regola di riscrittura vera e propria:
+# ^(.+)$: Questa espressione regolare cattura qualsiasi cosa dopo il percorso base. Il ^ indica l'inizio della stringa, e (.+)$ cattura uno o più caratteri fino alla fine della stringa. Il contenuto catturato viene memorizzato in $1.
+# index.php?url=$1: La richiesta viene riscritta in index.php, passando la parte catturata dalla URL originale come parametro url.
+# [QSA,L]:
+# QSA (Query String Append) mantiene eventuali query string originali. Se la URL originale aveva una query string, questa verrà aggiunta alla fine della nuova query string.
+# L (Last) indica che questa è l'ultima regola da applicare se la condizione è soddisfatta.
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
